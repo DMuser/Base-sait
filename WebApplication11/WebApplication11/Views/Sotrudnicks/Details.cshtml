@@ -1,0 +1,35 @@
+﻿@model WebApplication11.Models.Sotrudnick
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Sotrudnick</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Organizat.Name_Org)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Organizat.Name_Org)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id_Sotrud }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Rab_BdModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Group">
+    <Key>
+      <PropertyRef Name="Id_Group" />
+    </Key>
+    <Property Name="Id_Group" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name_Group" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Kurs" Type="Int32" Nullable="false" />
+    <Property Name="Teacher" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Kurs1" Relationship="Self.FK_Group_Kurs" FromRole="Group" ToRole="Kurs" />
+    <NavigationProperty Name="Teacher1" Relationship="Self.FK_Group_Teacher" FromRole="Group" ToRole="Teacher" />
+    <NavigationProperty Name="Temp" Relationship="Self.FK_Table_1_Group" FromRole="Group" ToRole="Temp" />
+    <NavigationProperty Name="Sotrudnick" Relationship="Self.Temp_2" FromRole="Group" ToRole="Sotrudnick" />
+  </EntityType>
+  <EntityType Name="Kurs">
+    <Key>
+      <PropertyRef Name="Id_Kurs" />
+    </Key>
+    <Property Name="Id_Kurs" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name_Kurs" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Group" Relationship="Self.FK_Group_Kurs" FromRole="Kurs" ToRole="Group" />
+  </EntityType>
+  <EntityType Name="Organizat">
+    <Key>
+      <PropertyRef Name="Id_Org" />
+    </Key>
+    <Property Name="Id_Org" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name_Org" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="INN" Type="Int32" Nullable="false" />
+    <Property Name="Teacher" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Teacher1" Relationship="Self.FK_Organizat_Teacher" FromRole="Organizat" ToRole="Teacher" />
+    <NavigationProperty Name="Sotrudnick" Relationship="Self.FK_Sotrudnick_Organizat" FromRole="Organizat" ToRole="Sotrudnick" />
+    <NavigationProperty Name="Temp" Relationship="Self.FK_Temp_Organizat" FromRole="Organizat" ToRole="Temp" />
+  </EntityType>
+  <EntityType Name="Sotrudnick">
+    <Key>
+      <PropertyRef Name="Id_Sotrud" />
+    </Key>
+    <Property Name="Id_Sotrud" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Org" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Organizat" Relationship="Self.FK_Sotrudnick_Organizat" FromRole="Sotrudnick" ToRole="Organizat" />
+    <NavigationProperty Name="Temp" Relationship="Self.FK_Table_1_Sotrudnick" FromRole="Sotrudnick" ToRole="Temp" />
+    <NavigationProperty Name="Group" Relationship="Self.Temp_2" FromRole="Sotrudnick" ToRole="Group" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Teacher">
+    <Key>
+      <PropertyRef Name="Id_Teacher" />
+    </Key>
+    <Property Name="Id_Teacher" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name_teacher" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Group" Relationship="Self.FK_Group_Teacher" FromRole="Teacher" ToRole="Group" />
+    <NavigationProperty Name="Organizat" Relationship="Self.FK_Organizat_Teacher" FromRole="Teacher" ToRole="Organizat" />
+  </EntityType>
+  <EntityType Name="Temp">
+    <Key>
+      <PropertyRef Name="Id_temp" />
+    </Key>
+    <Property Name="Id_Group" Type="Int32" Nullable="false" />
+    <Property Name="Id_Stud" Type="Int32" Nullable="false" />
+    <Property Name="Id_temp" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Id_Org" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Group" Relationship="Self.FK_Table_1_Group" FromRole="Temp" ToRole="Group" />
+    <NavigationProperty Name="Organizat" Relationship="Self.FK_Temp_Organizat" FromRole="Temp" ToRole="Organizat" />
+    <NavigationProperty Name="Sotrudnick" Relationship="Self.FK_Table_1_Sotrudnick" FromRole="Temp" ToRole="Sotrudnick" />
+  </EntityType>
+  <Association Name="FK_Group_Kurs">
+    <End Role="Kurs" Type="Self.Kurs" Multiplicity="1" />
+    <End Role="Group" Type="Self.Group" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Kurs">
+        <PropertyRef Name="Id_Kurs" />
+      </Principal>
+      <Dependent Role="Group">
+        <PropertyRef Name="Kurs" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Group_Teacher">
+    <End Role="Teacher" Type="Self.Teacher" Multiplicity="1" />
+    <End Role="Group" Type="Self.Group" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Teacher">
+        <PropertyRef Name="Id_Teacher" />
+      </Principal>
+      <Dependent Role="Group">
+        <PropertyRef Name="Teacher" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Table_1_Group">
+    <End Role="Group" Type="Self.Group" Multiplicity="1" />
+    <End Role="Temp" Type="Self.Temp" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Group">
+        <PropertyRef Name="Id_Group" />
+      </Principal>
+      <Dependent Role="Temp">
+        <PropertyRef Name="Id_Group" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Organizat_Teacher">
+    <End Role="Teacher" Type="Self.Teacher" Multiplicity="1" />
+    <End Role="Organizat" Type="Self.Organizat" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Teacher">
+        <PropertyRef Name="Id_Teacher" />
+      </Principal>
+      <Dependent Role="Organizat">
+        <PropertyRef Name="Teacher" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Sotrudnick_Organizat">
+    <End Role="Organizat" Type="Self.Organizat" Multiplicity="1" />
+    <End Role="Sotrudnick" Type="Self.Sotrudnick" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Organizat">
+        <PropertyRef Name="Id_Org" />
+      </Principal>
+      <Dependent Role="Sotrudnick">
+        <PropertyRef Name="Org" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Temp_Organizat">
+    <End Role="Organizat" Type="Self.Organizat" Multiplicity="1" />
+    <End Role="Temp" Type="Self.Temp" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Organizat">
+        <PropertyRef Name="Id_Org" />
+      </Principal>
+      <Dependent Role="Temp">
+        <PropertyRef Name="Id_Org" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Table_1_Sotrudnick">
+    <End Role="Sotrudnick" Type="Self.Sotrudnick" Multiplicity="1" />
+    <End Role="Temp" Type="Self.Temp" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sotrudnick">
+        <PropertyRef Name="Id_Sotrud" />
+      </Principal>
+      <Dependent Role="Temp">
+        <PropertyRef Name="Id_Stud" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Temp_2">
+    <End Role="Group" Type="Self.Group" Multiplicity="*" />
+    <End Role="Sotrudnick" Type="Self.Sotrudnick" Multiplicity="*" />
+  </Association>
+  <EntityContainer Name="Rab_BdEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Group" EntityType="Self.Group" />
+    <EntitySet Name="Kurs" EntityType="Self.Kurs" />
+    <EntitySet Name="Organizat" EntityType="Self.Organizat" />
+    <EntitySet Name="Sotrudnick" EntityType="Self.Sotrudnick" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="Teacher" EntityType="Self.Teacher" />
+    <EntitySet Name="Temp" EntityType="Self.Temp" />
+    <AssociationSet Name="FK_Group_Kurs" Association="Self.FK_Group_Kurs">
+      <End Role="Kurs" EntitySet="Kurs" />
+      <End Role="Group" EntitySet="Group" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Group_Teacher" Association="Self.FK_Group_Teacher">
+      <End Role="Teacher" EntitySet="Teacher" />
+      <End Role="Group" EntitySet="Group" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Table_1_Group" Association="Self.FK_Table_1_Group">
+      <End Role="Group" EntitySet="Group" />
+      <End Role="Temp" EntitySet="Temp" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Organizat_Teacher" Association="Self.FK_Organizat_Teacher">
+      <End Role="Teacher" EntitySet="Teacher" />
+      <End Role="Organizat" EntitySet="Organizat" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Sotrudnick_Organizat" Association="Self.FK_Sotrudnick_Organizat">
+      <End Role="Organizat" EntitySet="Organizat" />
+      <End Role="Sotrudnick" EntitySet="Sotrudnick" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Temp_Organizat" Association="Self.FK_Temp_Organizat">
+      <End Role="Organizat" EntitySet="Organizat" />
+      <End Role="Temp" EntitySet="Temp" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Table_1_Sotrudnick" Association="Self.FK_Table_1_Sotrudnick">
+      <End Role="Sotrudnick" EntitySet="Sotrudnick" />
+      <End Role="Temp" EntitySet="Temp" />
+    </AssociationSet>
+    <AssociationSet Name="Temp_2" Association="Self.Temp_2">
+      <End Role="Group" EntitySet="Group" />
+      <End Role="Sotrudnick" EntitySet="Sotrudnick" />
+    </AssociationSet>
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(Rab_BdModel.sp_helpdiagramdefinition_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(Rab_BdModel.sp_helpdiagrams_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
+  </EntityContainer>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
+</Schema>

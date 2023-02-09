@@ -1,0 +1,54 @@
+﻿@model IEnumerable<WebApplication11.Models.Temp>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Список студентов группы</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Название группы
+        </th>
+        <th>
+            Название организации
+        </th>
+        <th>
+           Имя сотрудника
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        var id = Request["id"];
+        //if(id = item.Id_Group)
+        if (id == item.Id_Group.ToString())
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Group.Name_Group)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Organizat.Name_Org)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sotrudnick.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Редактировать", "Edit", new { id = item.Id_temp }) |
+                @Html.ActionLink("Детали", "Details", new { id = item.Id_temp }) |
+                @Html.ActionLink("Удалить", "Delete", new { id = item.Id_temp }) |
+                <a href="/Groups/Index">Перейти к списку групп</a>
+            </td>
+        </tr>
+        }
+    }
+
+
+</table>

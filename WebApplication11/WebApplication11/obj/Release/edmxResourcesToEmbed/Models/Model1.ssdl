@@ -1,0 +1,263 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Хранилище Rab_BdModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Group">
+    <Key>
+      <PropertyRef Name="Id_Group" />
+    </Key>
+    <Property Name="Id_Group" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name_Group" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Kurs" Type="int" Nullable="false" />
+    <Property Name="Teacher" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Kurs">
+    <Key>
+      <PropertyRef Name="Id_Kurs" />
+    </Key>
+    <Property Name="Id_Kurs" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name_Kurs" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Organizat">
+    <Key>
+      <PropertyRef Name="Id_Org" />
+    </Key>
+    <Property Name="Id_Org" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name_Org" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="INN" Type="int" Nullable="false" />
+    <Property Name="Teacher" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Sotrudnick">
+    <Key>
+      <PropertyRef Name="Id_Sotrud" />
+    </Key>
+    <Property Name="Id_Sotrud" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Org" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="Teacher">
+    <Key>
+      <PropertyRef Name="Id_Teacher" />
+    </Key>
+    <Property Name="Id_Teacher" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name_teacher" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Temp">
+    <Key>
+      <PropertyRef Name="Id_temp" />
+    </Key>
+    <Property Name="Id_Group" Type="int" Nullable="false" />
+    <Property Name="Id_Stud" Type="int" Nullable="false" />
+    <Property Name="Id_temp" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Id_Org" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "Rab_Bd.dbo.Temp_2" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+  <EntityType Name="Temp_2">
+    <Key>
+      <PropertyRef Name="Id_Group" />
+      <PropertyRef Name="Id_rab" />
+    </Key>
+    <Property Name="Id_Group" Type="int" Nullable="false" />
+    <Property Name="Id_rab" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Group_Kurs">
+    <End Role="Kurs" Type="Self.Kurs" Multiplicity="1" />
+    <End Role="Group" Type="Self.Group" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Kurs">
+        <PropertyRef Name="Id_Kurs" />
+      </Principal>
+      <Dependent Role="Group">
+        <PropertyRef Name="Kurs" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Group_Teacher">
+    <End Role="Teacher" Type="Self.Teacher" Multiplicity="1" />
+    <End Role="Group" Type="Self.Group" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Teacher">
+        <PropertyRef Name="Id_Teacher" />
+      </Principal>
+      <Dependent Role="Group">
+        <PropertyRef Name="Teacher" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Organizat_Teacher">
+    <End Role="Teacher" Type="Self.Teacher" Multiplicity="1" />
+    <End Role="Organizat" Type="Self.Organizat" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Teacher">
+        <PropertyRef Name="Id_Teacher" />
+      </Principal>
+      <Dependent Role="Organizat">
+        <PropertyRef Name="Teacher" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Sotrudnick_Organizat">
+    <End Role="Organizat" Type="Self.Organizat" Multiplicity="1" />
+    <End Role="Sotrudnick" Type="Self.Sotrudnick" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Organizat">
+        <PropertyRef Name="Id_Org" />
+      </Principal>
+      <Dependent Role="Sotrudnick">
+        <PropertyRef Name="Org" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Table_1_Group">
+    <End Role="Group" Type="Self.Group" Multiplicity="1" />
+    <End Role="Temp" Type="Self.Temp" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Group">
+        <PropertyRef Name="Id_Group" />
+      </Principal>
+      <Dependent Role="Temp">
+        <PropertyRef Name="Id_Group" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Table_1_Sotrudnick">
+    <End Role="Sotrudnick" Type="Self.Sotrudnick" Multiplicity="1" />
+    <End Role="Temp" Type="Self.Temp" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sotrudnick">
+        <PropertyRef Name="Id_Sotrud" />
+      </Principal>
+      <Dependent Role="Temp">
+        <PropertyRef Name="Id_Stud" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Temp_2_Group">
+    <End Role="Group" Type="Self.Group" Multiplicity="1" />
+    <End Role="Temp_2" Type="Self.Temp_2" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Group">
+        <PropertyRef Name="Id_Group" />
+      </Principal>
+      <Dependent Role="Temp_2">
+        <PropertyRef Name="Id_Group" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Temp_2_Sotrudnick">
+    <End Role="Sotrudnick" Type="Self.Sotrudnick" Multiplicity="1" />
+    <End Role="Temp_2" Type="Self.Temp_2" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sotrudnick">
+        <PropertyRef Name="Id_Sotrud" />
+      </Principal>
+      <Dependent Role="Temp_2">
+        <PropertyRef Name="Id_rab" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Temp_Organizat">
+    <End Role="Organizat" Type="Self.Organizat" Multiplicity="1" />
+    <End Role="Temp" Type="Self.Temp" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Organizat">
+        <PropertyRef Name="Id_Org" />
+      </Principal>
+      <Dependent Role="Temp">
+        <PropertyRef Name="Id_Org" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <EntityContainer Name="Хранилище Rab_BdModelContainer">
+    <EntitySet Name="Group" EntityType="Self.Group" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Kurs" EntityType="Self.Kurs" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Organizat" EntityType="Self.Organizat" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Sotrudnick" EntityType="Self.Sotrudnick" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Teacher" EntityType="Self.Teacher" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Temp" EntityType="Self.Temp" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Temp_2" EntityType="Self.Temp_2" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Temp_2].[Id_Group] AS [Id_Group], 
+    [Temp_2].[Id_rab] AS [Id_rab]
+    FROM [dbo].[Temp_2] AS [Temp_2]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_Group_Kurs" Association="Self.FK_Group_Kurs">
+      <End Role="Kurs" EntitySet="Kurs" />
+      <End Role="Group" EntitySet="Group" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Group_Teacher" Association="Self.FK_Group_Teacher">
+      <End Role="Teacher" EntitySet="Teacher" />
+      <End Role="Group" EntitySet="Group" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Organizat_Teacher" Association="Self.FK_Organizat_Teacher">
+      <End Role="Teacher" EntitySet="Teacher" />
+      <End Role="Organizat" EntitySet="Organizat" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Sotrudnick_Organizat" Association="Self.FK_Sotrudnick_Organizat">
+      <End Role="Organizat" EntitySet="Organizat" />
+      <End Role="Sotrudnick" EntitySet="Sotrudnick" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Table_1_Group" Association="Self.FK_Table_1_Group">
+      <End Role="Group" EntitySet="Group" />
+      <End Role="Temp" EntitySet="Temp" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Table_1_Sotrudnick" Association="Self.FK_Table_1_Sotrudnick">
+      <End Role="Sotrudnick" EntitySet="Sotrudnick" />
+      <End Role="Temp" EntitySet="Temp" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Temp_2_Group" Association="Self.FK_Temp_2_Group">
+      <End Role="Group" EntitySet="Group" />
+      <End Role="Temp_2" EntitySet="Temp_2" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Temp_2_Sotrudnick" Association="Self.FK_Temp_2_Sotrudnick">
+      <End Role="Sotrudnick" EntitySet="Sotrudnick" />
+      <End Role="Temp_2" EntitySet="Temp_2" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Temp_Organizat" Association="Self.FK_Temp_Organizat">
+      <End Role="Organizat" EntitySet="Organizat" />
+      <End Role="Temp" EntitySet="Temp" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
